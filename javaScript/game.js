@@ -59,14 +59,25 @@ addEventListener("keyup", function (e) {
     delete keysDown[e.keyCode];
 }, false);
 
-canvas.addEventListener('touchmove', function(event) {
-    for (var i = 0; i < event.touches.length; i++) {
-        var touch = event.touches[i];
+canvas.addEventListener('touchstart', function(e) {
+    for (var i = 0; i < e.touches.length; i++) {
+        var touch = e.touches[i];
         ctx.beginPath();
         ctx.arc(touch.pageX, touch.pageY, 20, 0, 2*Math.PI, true);
         ctx.fill();
         ctx.stroke();
+        console.log("touchstart:"+touch.pageX);
+        if ( touch.pageX < 150 ){
+            keysDown[37] = true;
+        }else{
+            keysDown[39] = true;
+        }
     }
+}, false);
+canvas.addEventListener('touchend', function(e) {
+    delete keysDown[39];
+    delete keysDown[37];
+    console.log("touchend");
 }, false);
 
 //开始新一轮游戏
