@@ -2,7 +2,13 @@
  * Created by Administrator on 2015/7/18 0018.
  * 根据 http://www.cnblogs.com/Wayou/p/how-to-make-a-simple-html5-canvas-game.html 改编
  * TODO 把按键玩法改变为触摸玩法
+ * 7.23 加了触摸，优化
+ *
  */
+var gHeight = document.body.clientHeight;
+var gWidth = document.body.clientHeight < document.body.clientWidth ? gHeight * 3 / 4 : document.body.clientWidth;
+console.log("gheight:" + gHeight);
+console.log("gwidth:" + gWidth);
 // 游戏对象-招财猫
 var zcm = {
     speed: 200,
@@ -27,11 +33,12 @@ var gtime = 0, gscore = 0 , ybsl = 5, gstop = true;
 
 
 // Create the canvas
-var canvas = document.createElement("canvas");
+//var canvas = document.createElement("canvas");
+var canvas = document.getElementById("canvas");
 var ctx = canvas.getContext("2d");
-canvas.width = 300;
-canvas.height = 480;
-document.body.appendChild(canvas);
+canvas.width = gWidth;
+canvas.height = gHeight;
+//document.body.appendChild(canvas);
 
 // 招财猫图片
 var zcmReady = false;
@@ -59,22 +66,23 @@ addEventListener("keyup", function (e) {
     delete keysDown[e.keyCode];
 }, false);
 
-canvas.addEventListener('touchstart', function(e) {
+canvas.addEventListener('touchstart', function (e) {
+    e.preventDefault();//阻止默认事件发生
     for (var i = 0; i < e.touches.length; i++) {
         var touch = e.touches[i];
-        ctx.beginPath();
-        ctx.arc(touch.pageX, touch.pageY, 20, 0, 2*Math.PI, true);
+      /*  ctx.beginPath();
+        ctx.arc(touch.pageX, touch.pageY, 20, 0, 2 * Math.PI, true);
         ctx.fill();
         ctx.stroke();
-        console.log("touchstart:"+touch.pageX);
-        if ( touch.pageX < 150 ){
+        console.log("touchstart:" + touch.pageX);*/
+        if (touch.pageX < document.body.clientWidth/2 ) {
             keysDown[37] = true;
-        }else{
+        } else {
             keysDown[39] = true;
         }
     }
 }, false);
-canvas.addEventListener('touchend', function(e) {
+canvas.addEventListener('touchend', function (e) {
     delete keysDown[39];
     delete keysDown[37];
     console.log("touchend");
@@ -132,7 +140,7 @@ var update = function (modifier) {
 var render = function () {
     //背景
     ctx.fillStyle = "#ff9588";
-    ctx.fillRect(0, 0, 300, 480);
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
     ctx.fillStyle = "#000";
     ctx.font = "16px Helvetica";
     //console.log('画出所有物体');
@@ -146,12 +154,12 @@ var render = function () {
     }
     if (gstop) {
         //ctx.fillText("分数: " + gscore, 32, 32);
-       // ctx.fillText("时间: " + 0, 32, 50);
+        // ctx.fillText("时间: " + 0, 32, 50);
         ctx.fillStyle = "red";
         ctx.font = "20px Helvetica";
-        ctx.fillText("你的得分为："+gscore, 80,70);
-        ctx.fillText("哎哟，不错哦!",80, 95);
-        ctx.fillText("按↑重新开始^_^", 80, 115);
+        ctx.fillText("你的得分为：" + gscore, 80, 70);
+        ctx.fillText("哎哟，不错哦!", 80, 95);
+        ctx.fillText("按↑或刷新重新开始^_^", 80, 115);
 
 
     } else {

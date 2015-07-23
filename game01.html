@@ -6,12 +6,26 @@
     <title>接元宝</title>
     <meta name="description" content="">
     <meta name="keywords" content="">
-    <!--<meta name= "viewport" target-densitydpi = medium-dpi>-->
-    <!--<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">-->
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
     <link href="" rel="stylesheet">
+    <style>
+        /* 要 html和body一起设置才生效，document.body.clientHeight*/
+        html, body {
+            padding: 0;
+            margin: 0;
+            width: 100%;
+            height: 100%;
+            text-align: center; /*使canvas居中*/
+            background-color: red;
+        }
+
+    </style>
 </head>
 <body>
+<div>
+    <canvas id="canvas"></canvas>
+</div>
+
 <script type="text/javascript" src="javaScript/game.js"></script>
 </body>
 </html>
